@@ -1,19 +1,12 @@
 import json
 
-from bambino.tokenizer import BPETokenizer
+from bambino.train_bpe import train_from_input_path
 from .common import FIXTURES_PATH, gpt2_bytes_to_unicode
-
-
-def run_train_bpe(input_path, vocab_size, special_tokens):
-    tokenizer = BPETokenizer.train_from_input_path(
-        input_path, vocab_size, special_tokens
-    )
-    return tokenizer.vocab, tokenizer.merges
 
 
 def test_train_bpe():
     input_path = FIXTURES_PATH / "corpus.en"
-    vocab, merges = run_train_bpe(
+    vocab, merges = train_from_input_path(
         input_path=input_path,
         vocab_size=500,
         special_tokens=["<|endoftext|>"],
