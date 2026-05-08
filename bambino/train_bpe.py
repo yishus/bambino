@@ -218,8 +218,9 @@ def pretokenize_chunk(data: bytes, special_tokens) -> dict[bytes, int]:
     words = data.decode("utf-8", errors="ignore")
     chunks_without_special_tokens = [words]
     if special_tokens:
+        special_tokens_pattern = "|".join(re.escape(s) for s in special_tokens)
         chunks_without_special_tokens = [
-            s for s in re.split(r"\|".join(special_tokens), words) if s
+            s for s in re.split(special_tokens_pattern, words) if s
         ]
 
     tokens_count = defaultdict(int)
