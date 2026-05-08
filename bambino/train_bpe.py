@@ -61,9 +61,14 @@ def train_from_input_path(
             )
             for word_i in indices:
                 if word_i > 0:
+                    # Find the pair consisting of the preceeding token and first half of the new pair
                     prev_pair = (word_components[word][word_i - 1], pair[0])
+                    # Reduce the pair frequency due to the merge by the word frequency
+                    # We do not simply set this pair frequency to zero because this prev pair can occur
+                    # that is not preceeding the merging pair
                     pair_frequency[prev_pair] -= freq_table[word]
 
+                    # The new pair consist of the precceding token and the new merged bytes
                     new_pair = (word_components[word][word_i - 1], merged)
                     pair_frequency[new_pair] += freq_table[word]
 
