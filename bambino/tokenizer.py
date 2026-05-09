@@ -1,6 +1,7 @@
 import json
 import os
 from typing import Self
+from collections.abc import Iterable, Iterator
 
 import regex as re
 
@@ -76,6 +77,16 @@ class BPETokenizer:
             res += self._encode_str(text)
 
         return res
+
+    def encode_iterable(self, iterable: Iterable[str]) -> Iterator[int]:
+        for chunk in iterable:
+            ids = self.encode(chunk)
+            for id in ids:
+                yield id
+
+    def decode(self, ids: list[int]) -> str:
+        raw_bytes = b"".join([self.vocab[id] for id in ids])
+        return raw_bytes.decode(errors="replace")
 
     def _encode_str(self, text: str) -> list[int]:
         res = []

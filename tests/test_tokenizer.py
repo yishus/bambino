@@ -54,6 +54,8 @@ def test_roundtrip_empty():
     )
     test_string = ""
     encoded_ids = tokenizer.encode(test_string)
+    decoded_string = tokenizer.decode(encoded_ids)
+    assert test_string == decoded_string
 
 
 def test_roundtrip_single_character():
@@ -63,6 +65,8 @@ def test_roundtrip_single_character():
     )
     test_string = "s"
     encoded_ids = tokenizer.encode(test_string)
+    decoded_string = tokenizer.decode(encoded_ids)
+    assert test_string == decoded_string
 
 
 def test_roundtrip_ascii_string():
@@ -72,6 +76,8 @@ def test_roundtrip_ascii_string():
     )
     test_string = "Hello, how are you?"
     encoded_ids = tokenizer.encode(test_string)
+    decoded_string = tokenizer.decode(encoded_ids)
+    assert test_string == decoded_string
 
 
 def test_roundtrip_unicode_string_with_special_tokens():
@@ -80,3 +86,9 @@ def test_roundtrip_unicode_string_with_special_tokens():
     )
     test_string = "Héllò hôw <|endoftext|><|endoftext|> are ü? 🙃<|endoftext|>"
     encoded_ids = tokenizer.encode(test_string)
+    tokenized_string = [tokenizer.decode([x]) for x in encoded_ids]
+    # Ensure the special <|endoftext|> token is preserved
+    assert tokenized_string.count("<|endoftext|>") == 3
+
+    decoded_string = tokenizer.decode(encoded_ids)
+    assert test_string == decoded_string
